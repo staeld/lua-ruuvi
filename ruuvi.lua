@@ -17,8 +17,10 @@
 -- You should have received a copy of the GNU General Public License
 -- along with lua-ruuvi. If not, see <http://www.gnu.org/licenses/>.
 
--- Fix the fact our libraries may be in a 5.1 directory
-package.path    = package.path ..";".. package.path:gsub("5%.2", "5.1")
+if _VERSION == "Lua 5.2" then
+    -- Fix the problem that our libraries may be in a 5.1 directory
+    package.path    = package.path ..";".. package.path:gsub("5%.2", "5.1")
+end
 
 -- Prerequisites
 local json      = require("dkjson")

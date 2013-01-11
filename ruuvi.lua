@@ -17,5 +17,14 @@
 -- You should have received a copy of the GNU General Public License
 -- along with lua-ruuvi. If not, see <http://www.gnu.org/licenses/>.
 
+-- Fix the fact our libraries may be in a 5.1 directory
+package.path    = package.path ..";".. package.path:gsub("5%.2", "5.1")
+
+-- Prerequisites
+local json      = require("dkjson")
+local curl      = require("cURL")
+local aux       = require("helpers")
+local events    = require("events")
+local trackers  = require("trackers")
 
 -- EOF

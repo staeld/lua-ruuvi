@@ -1,0 +1,13 @@
+TODO file for lua-ruuvi
+
+CURRENT
+    
+    [ ] Sketch out the implementation
+    [ ] Decide on dependencies
+
+
+IDEAS
+
+    - Use lua-dkjson for JSON handling
+
+BUGS

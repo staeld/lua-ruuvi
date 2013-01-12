@@ -3,3 +3,7 @@ Changelog for lua-ruuvi
  + 2013-01-11
  
   Initialised repo
+
+ + 2013-01-12
+ 
+  Began structuring the library and figuring out how Lua 5.2 works

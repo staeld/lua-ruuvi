@@ -17,16 +17,27 @@
 -- You should have received a copy of the GNU General Public License
 -- along with lua-ruuvi. If not, see <http://www.gnu.org/licenses/>.
 
+libName, libVersion = "lua-ruuvi", "0.0.1"
+
 if _VERSION == "Lua 5.2" then
     -- Fix the problem that our libraries may be in a 5.1 directory
-    package.path    = package.path ..";".. package.path:gsub("5%.2", "5.1")
+    package.path = package.path ..";".. package.path:gsub("5%.2", "5.1")
 end
 
+-- Module wrapper
+local M = {}
+
 -- Prerequisites
-local json      = require("dkjson")
-local curl      = require("cURL")
-local aux       = require("helpers")
-local events    = require("events")
-local trackers  = require("trackers")
+json        = require("dkjson")
+curl        = require("cURL")
+M.vars      = require("vars")
+M.aux       = require("helpers")  -- Load these first; used other places
+M.events    = require("events")
+M.trackers  = require("trackers")
+
+-- This should probably just be hardcoded, but left here for now
+-- TODO: Implement this so it actually works (won't be provided with te module this way)
+
+return M    -- Provide the module to the caller
 
 -- EOF

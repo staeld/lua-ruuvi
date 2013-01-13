@@ -5,6 +5,47 @@
 -- lua-ruuvi is released under the GPLv3 - see COPYING
 local M = {}
 
+-- TODO: Refactor these into one/several smaller functions; reuse code
+function M.getList(server, idString)
+    local c
+    if idString then
+        c = aux.connObj(server, "events/" .. idString)
+    else
+        c = aux.connObj(server, "events")
+    end
+    local f = io.tmpfile()
+    c:perform({ writefunction = f:write })
+    local obj = aux.readjson(f)
+    f:close()
+    return obj.events
+end
+
+function M.getFor(server, idString, paramArray)
+    local path = "trackers/" .. idString .. "/events"
+    if paramArray then path = aux.addParams(path, paramArray) end
+    local c = aux.connObj(server, path)
+    local f = io.tmpfile()
+    c:perform({ writefurntion = f:write })
+    local obj = aux.readjson(f)
+    f:close()
+    return obj.events
+end
+
+function M.getLatestFor(server, idString, paramArray)
+    local path = "trackers/" .. idString .. "/events/latest"
+    if paramArray then path = aux.addParams(path, paramArray) end
+    local c = aux.connObj(server, path)
+    local f = io.tmpfile()
+    c:perform({ writefurntion = f:write })
+    local obj = aux.readjson(f)
+    f:close()
+    return obj.events
+end
+
+--[[
+function M.handleList(str, f)
+    f:write(str)
+end --]]
 
 return M
 -- EOF

@@ -22,7 +22,7 @@ function M.connObj(server, path)
     return c
 end
 
--- TODO: aux.ping() should be moved to top level (ruuvi.ping()) for direct use
+-- TODO: should aux.ping() be moved to top level (ruuvi.ping()) for direct use?
 function M.ping(server)
     local c = M.connObj(server, "ping")
     c:perform({ writefunction = M.handlePing })
@@ -40,6 +40,26 @@ function M.handlePing(str)
         -- FIXME: This return is not received by anything
         return diff, obj['server-software']
     end
+end
+
+function M.addParams(path, paramArray)
+    local paramsAdded = false
+    for param, value in pairs(paramArray) do
+        if not paramsAdded then
+            path = path .."?".. param .."=".. value
+            paramsAdded = true
+        else
+            path = path .."&".. param .."=".. value
+        end
+    end
+    return path
+end
+
+function M.readjson(filehandle)
+    local str = filehandle:read("*a")
+    local obj, pos, err = json.decode(str)
+    if err then M.throwError(err)
+    else return obj end
 end
 
 function M.toTimeTable(str)

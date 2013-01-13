@@ -8,41 +8,40 @@
 local curl = require("cURL")
 
 -- Declare module container
-local M = {}
+local aux = {}
 
-function M.throwError(err)
+function aux.throwError(err)
     io.stderr:write("error: ", err, "\n")
     os.exit(1)
 end
 
-function M.connObj(server, path)
+function aux.connObj(server, path)
     local c = curl.easy_init()
     c:setopt_useragent(libName .."/".. libVersion)
-    c:setopt_url(server .. apiPath .. path)
+    c:setopt_url(server .. vars.apiPath .. path)
     return c
 end
 
 -- TODO: should aux.ping() be moved to top level (ruuvi.ping()) for direct use?
-function M.ping(server)
-    local c = M.connObj(server, "ping")
-    c:perform({ writefunction = M.handlePing })
-end
+function aux.ping(server)
+    local pingTime = os.time(os.date("!*t"))    -- Ensure it's in UTC
 
-function M.handlePing(str)
-    -- We expect the ping response to be json
-    local obj, pos, err = json.decode(str)
-    if     err then M.throwError(err)
-    elseif obj and obj.time then
-        local now      = os.time(os.date("!*t"))
-        local pingTime = os.time(M.toTimeTable(obj.time))
-        local diff     = os.difftime(now, pingTime)
-        -- TODO: Do something with the ping info?
-        -- FIXME: This return is not received by anything
-        return diff, obj['server-software']
+    local c = aux.connObj(server, "ping")
+    local f = io.tmpfile()
+    c:perform({ writefunction = function(str) f:write(str) end})
+    local recv = os.time(os.date("!*t"))
+    local obj  = aux.readjson(f)
+    f:close()
+    if obj and obj.time then
+        local serverTime = os.time(aux.toTimeTable(obj.time))
+        local servdiff   = os.difftime(recv, serverTime)
+        local lag        = os.difftime(recv, pingTime)
+        print("Ping successful! Turnabout lag: " .. lag .. ", time difference: " .. servdiff)
+        return true, lag, servdiff
     end
 end
 
-function M.addParams(path, paramArray)
+function aux.url_addParams(path, paramArray)
     local paramsAdded = false
     for param, value in pairs(paramArray) do
         if not paramsAdded then
@@ -55,14 +54,15 @@ function M.addParams(path, paramArray)
     return path
 end
 
-function M.readjson(filehandle)
+function aux.readjson(filehandle)
+    filehandle:seek("set")
     local str = filehandle:read("*a")
     local obj, pos, err = json.decode(str)
-    if err then M.throwError(err)
+    if err then aux.throwError(err)
     else return obj end
 end
 
-function M.toTimeTable(str)
+function aux.toTimeTable(str)
     local t = {}
     t.year, t.month, t.day = str:match("(%d%d%d%d)%-(%d%d)%-(%d%d)")
     t.hour, t.min, t.sec, t.off, t.offh, t.offm = str:match("T(%d%d):(%d%d):(%d%d).-([+-])(%d%d)(%d%d)")
@@ -77,9 +77,9 @@ function M.toTimeTable(str)
     return t
 end
 
-function M.toTimeString(t)
+function aux.toTimeString(t)
     os.date("!%FT%T%z", os.time(t))
 end
 
-return M
+return aux
 -- EOF

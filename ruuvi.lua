@@ -30,14 +30,12 @@ local M = {}
 -- Prerequisites
 json        = require("dkjson")
 curl        = require("cURL")
-M.vars      = require("vars")
-M.aux       = require("helpers")  -- Load these first; used other places
-M.events    = require("events")
-M.trackers  = require("trackers")
+vars        = require("vars")
+aux         = require("helpers")  -- Load these first; used other places
+events      = require("events")
+trackers    = require("trackers")
 
--- This should probably just be hardcoded, but left here for now
--- TODO: Implement this so it actually works (won't be provided with te module this way)
-
-return M    -- Provide the module to the caller
+-- TODO: Figure out a sane way to return the module properly while preserving access from within the modules themselves when loading above
+return { vars = vars, aux = aux, events = events, trackers = trackers }    -- Provide the module to the caller
 
 -- EOF

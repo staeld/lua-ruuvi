@@ -5,22 +5,18 @@
 -- lua-ruuvi is released under the GPLv3 - see COPYING
 local M = {}
 
-function M.getList(server, idString)
-    local c
+function M.getList(server, idString, paramArray)
+    local path = server .. "trackers"
     if idString then
-        c = aux.connObj(server, "trackers/" .. idString)
-    else
-        c = aux.connObj(server, "trackers")
+        path = path .."/".. idString
     end
-    c:perform({ writefunction = M.handleList })
-end
-
-function M.handleList(str)
-    local obj, pos, err = json.decode(str)
-    if     err then aux.throwError(err)
-    elseif obj and obj.trackers then
-        return obj.trackers
-    end
+    if paramArray then path = aux.url_addParams(path, paramArray) end
+    local c = aux.connObj(server, path)
+    local f = io.tmpfile()
+    c:perform({ writefunction = function(str) f:write(str) end })
+    local obj = aux.readjson(f)
+    f:close()
+    return obj.trackers
 end
 
 return M

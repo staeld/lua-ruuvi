@@ -11,14 +11,15 @@ local curl = require("cURL")
 local aux = {}
 
 function aux.throwError(err)
-    io.stderr:write("error: ", err, "\n")
-    os.exit(1)
+    error(err)
+    --io.stderr:write("error: ", err, "\n")
+    --os.exit(1)
 end
 
 function aux.connObj(server, path)
     local c = curl.easy_init()
     c:setopt_useragent(libName .."/".. libVersion)
-    c:setopt_url(server .. vars.apiPath .. path)
+    c:setopt_url(server .. path)
     return c
 end
 
@@ -28,7 +29,7 @@ function aux.ping(server)
 
     local c = aux.connObj(server, "ping")
     local f = io.tmpfile()
-    c:perform({ writefunction = function(str) f:write(str) end})
+    c:perform({ writefunction = function(str) f:write(str) end })
     local recv = os.time(os.date("!*t"))
     local obj  = aux.readjson(f)
     f:close()
@@ -36,7 +37,7 @@ function aux.ping(server)
         local serverTime = os.time(aux.toTimeTable(obj.time))
         local servdiff   = os.difftime(recv, serverTime)
         local lag        = os.difftime(recv, pingTime)
-        print("Ping successful! Turnabout lag: " .. lag .. ", time difference: " .. servdiff)
+        print("DEBUG Ping successful! Turnabout lag: " .. lag .. ", time difference: " .. servdiff)
         return true, lag, servdiff
     end
 end

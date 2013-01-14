@@ -2,12 +2,23 @@ TODO file for lua-ruuvi
 
 CURRENT
     
-    [ ] Sketch out the implementation
-    [ ] Decide on dependencies
+    [x] Sketch out the implementation
+    [/] Decide on dependencies
+    [x] Ping via api
+    [ ] Get list of trackers
+        [ ] Prettify/condense this code
+    [ ] Rewrite event functions
 
 
 IDEAS
 
     - Use lua-dkjson for JSON handling
+    - Use objects; read up on metatables
+        serv = ruuvi.new(url)
+        serv:ping()
+        - How does one handle trackers etc.?
+            serv:eventList(paramArray)
+            serv:trackerList(paramArray)
+            serv:latestEvent(trackerId, paramArray)
 
 BUGS

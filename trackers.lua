@@ -6,7 +6,7 @@
 local M = {}
 
 function M.getList(server, idString, paramArray)
-    local path = server .. "trackers"
+    local path = "trackers"
     if idString then
         path = path .."/".. idString
     end

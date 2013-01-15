@@ -14,7 +14,7 @@ function M.getList(server, idString)
         c = aux.connObj(server, "events")
     end
     local f = io.tmpfile()
-    c:perform({ writefunction = f:write(str) })
+    c:perform({ writefunction = function(str) f:write(str) end })
     local obj = aux.readjson(f)
     f:close()
     return obj.events
@@ -25,7 +25,7 @@ function M.getFor(server, idString, paramArray)
     if paramArray then path = aux.url_addParams(path, paramArray) end
     local c = aux.connObj(server, path)
     local f = io.tmpfile()
-    c:perform({ writefurntion = f:write(str) })
+    c:perform({ writefunction = function(str) f:write(str) end })
     local obj = aux.readjson(f)
     f:close()
     return obj.events
@@ -36,16 +36,11 @@ function M.getLatestFor(server, idString, paramArray)
     if paramArray then path = aux.url_addParams(path, paramArray) end
     local c = aux.connObj(server, path)
     local f = io.tmpfile()
-    c:perform({ writefurntion = f:write(str) })
+    c:perform({ writefunction = function(str) f:write(str) end })
     local obj = aux.readjson(f)
     f:close()
     return obj.events
 end
-
---[[
-function M.handleList(str, f)
-    f:write(str)
-end --]]
 
 return M
 -- EOF

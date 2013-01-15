@@ -16,10 +16,12 @@ function aux.throwError(err)
     --os.exit(1)
 end
 
-function aux.connObj(server, path)
+function aux.connObj(url, path)
+    path = path or ""
     local c = curl.easy_init()
     c:setopt_useragent(libName .."/".. libVersion)
-    c:setopt_url(server .. path)
+    c:setopt_url(url .. path)
+    print(url, path)
     return c
 end
 
@@ -39,6 +41,8 @@ function aux.ping(server)
         local lag        = os.difftime(recv, pingTime)
         print("DEBUG Ping successful! Turnabout lag: " .. lag .. ", time difference: " .. servdiff)
         return true, lag, servdiff
+    else
+        print("Ping did not output proper response!")
     end
 end
 

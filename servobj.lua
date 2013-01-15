@@ -8,8 +8,8 @@ local M = {}
 function M.new(url)
     if type(url) ~= "string" then aux.throwError("not a string") end
     local obj = {}
-    if not url:find(vars.apiPath) then
-        url = url:gsub("/$", "") .. apiPath
+    if not url:find(vars.apiPath:gsub("([%.%-%+])", "%%%1")) then
+        url = url:gsub("/$", "") .. vars.apiPath
     end
 
     obj.url = url
@@ -18,13 +18,14 @@ function M.new(url)
     function obj:ping()
         return aux.ping(self.url)
     end
-    
+
     -- Events
     function obj:events(idString, paramArray)
         return events.getList(self.url, idString, paramArray)
     end
     -- Trackers
     function obj:trackers(idString, paramArray)
+        print(self.url)
         return trackers.getList(self.url, idString, paramArray)
     end
     function obj:eventsFor(idString, paramArray)
@@ -33,6 +34,8 @@ function M.new(url)
     function obj:latestFor(idString, paramArray)
         return events.getLatestFor(self.url, idString, paramArray)
     end
+    
+    return obj
 end
 
 return M

@@ -6,6 +6,27 @@
 
 local ruuvi = require("ruuvi")
 
-ruuvi.aux.ping("http://dev-server.ruuvitracker.fi")
+local url = "http://dev-server.ruuvitracker.fi/api/v1-dev/" -- Testing server
+local server = ruuvi.new(url)
+
+print("Testing direct call to ruuvi.aux.ping()")
+--ruuvi.aux.ping(url)
+
+print("Testing server object creation and pinging")
+--server:ping()
+
+print("Testing tracker listing")
+for i, t in ipairs(server:trackers()) do
+    print(i)
+    for k, v in pairs(t) do print(k,v) end
+end
+
+print("Testing event listing")
+local arr = server:events()
+print(arr['1'], arr[1], arr.id, arr.events)
+for i, t in pairs(arr) do
+    print(i, t)
+    for k, v in pairs(t) do print(k,v) end
+end
 
 -- EOF

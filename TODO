@@ -3,9 +3,9 @@ TODO file for lua-ruuvi
 CURRENT
     
     [x] Sketch out the implementation
-    [/] Decide on dependencies
+    [x] Decide on dependencies
     [x] Ping via api
-    [ ] Get list of trackers
+    [x] Get list of trackers
         [ ] Prettify/condense this code
     [ ] Rewrite event functions
 

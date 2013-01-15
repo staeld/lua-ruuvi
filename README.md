@@ -60,6 +60,8 @@ be prioritised until it reaches some sort of usability.
 
 # 5 Usage
 
+See `testlib.lua` for examples on how the library is tested (and thus, how it is used).
+
 TBW.
 
 //EOF

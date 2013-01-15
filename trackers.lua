@@ -19,5 +19,33 @@ function M.getList(server, idString, paramArray)
     return obj.trackers
 end
 
+-- TODO: Refactor/fix these
+function M.getId(server, name, paramArray)
+    local list = M.getList(server, nil, paramArray)
+    for i, t in ipairs(list) do
+        if t.tracker_code == name then return t.id end
+    end
+    -- Try again, with real names instead of id-strings
+    for i, t in ipairs(list) do
+        if t.name == name then return t.id end
+    end
+    return nil
+end
+function M.getCode(server, id, paramArray)
+    local list = M.getList(server, nil, paramArray)
+    return M.handleGet(list, "code", id)
+end
+function M.getName(server, name, paramArray)
+    local list = M.getList(server, nil, paramArray)
+    return M.handleGet(list, "name", id)
+end
+
+function M.handleGet(list, item, id)
+    for i, t in ipairs(list) do
+        if t.id == id then return t[item] end
+    end
+
+end
+
 return M
 -- EOF

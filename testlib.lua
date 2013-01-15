@@ -4,10 +4,10 @@
 -- This file is part of lua-ruuvi.
 -- lua-ruuvi is released under the GPLv3 - see COPYING
 
-local ruuvi = require("ruuvi")
+ruuvi = require("ruuvi")
 
-local url = "http://dev-server.ruuvitracker.fi/api/v1-dev/" -- Testing server
-local server = ruuvi.new(url)
+url = "http://dev-server.ruuvitracker.fi/api/v1-dev/" -- Testing server
+server = ruuvi.new(url)
 
 print("Testing direct call to ruuvi.aux.ping()")
 --ruuvi.aux.ping(url)
@@ -17,16 +17,17 @@ print("Testing server object creation and pinging")
 
 print("Testing tracker listing")
 for i, t in ipairs(server:trackers()) do
-    print(i)
+    print("\n", i)
     for k, v in pairs(t) do print(k,v) end
 end
 
 print("Testing event listing")
 local arr = server:events()
-print(arr['1'], arr[1], arr.id, arr.events)
-for i, t in pairs(arr) do
-    print(i, t)
+for i, t in ipairs(arr) do
+    print("\n", i)
     for k, v in pairs(t) do print(k,v) end
 end
 
+print("Testing fetching of tracker IDs")
+print(server:trackerId("fooo"), server:trackerId("sepeto"))
 -- EOF

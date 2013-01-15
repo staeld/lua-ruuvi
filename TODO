@@ -8,6 +8,7 @@ CURRENT
     [x] Get list of trackers
         [ ] Prettify/condense this code
     [ ] Rewrite event functions
+    [ ] Resolve tracker IDs from names, vice versa
 
 
 IDEAS

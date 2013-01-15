@@ -13,7 +13,7 @@ function M.new(url)
     end
 
     obj.url = url
-    obj._c   = aux.connObj(url) -- TODO: Use this object instead of creating new ones for every function call
+    obj._c  = aux.connObj(url) -- TODO: Use this object instead of creating new ones for every function call
 
     function obj:ping()
         return aux.ping(self.url)
@@ -24,8 +24,16 @@ function M.new(url)
         return events.getList(self.url, idString, paramArray)
     end
     -- Trackers
+    function obj:trackerId(name)
+        return trackers.getId(self.url, name)
+    end
+    function obj:trackerCode(id)
+        return trackers.getCode(self.url, id)
+    end
+    function obj:trackerName(id)
+        return trackers.getName(self.url, id)
+    end
     function obj:trackers(idString, paramArray)
-        print(self.url)
         return trackers.getList(self.url, idString, paramArray)
     end
     function obj:eventsFor(idString, paramArray)

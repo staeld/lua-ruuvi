@@ -8,7 +8,8 @@ CURRENT
     [x] Get list of trackers
         [ ] Prettify/condense this code
     [ ] Rewrite event functions
-    [ ] Resolve tracker IDs from names, vice versa
+    [x] Resolve tracker IDs from names, vice versa
+    [ ] Reuse connection object from server object; don't create a new every time
 
 
 IDEAS
@@ -21,5 +22,6 @@ IDEAS
             serv:eventList(paramArray)
             serv:trackerList(paramArray)
             serv:latestEvent(trackerId, paramArray)
+    - Caching
 
 BUGS

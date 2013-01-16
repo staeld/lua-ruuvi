@@ -17,17 +17,16 @@ print("Testing server object creation and pinging")
 
 print("Testing tracker listing")
 for i, t in ipairs(server:trackers()) do
-    print("\n", i)
     for k, v in pairs(t) do print(k,v) end
 end
 
 print("Testing event listing")
 local arr = server:events()
 for i, t in ipairs(arr) do
-    print("\n", i)
     for k, v in pairs(t) do print(k,v) end
 end
 
 print("Testing fetching of tracker IDs")
 print(server:trackerId("fooo"), server:trackerId("sepeto"))
+print(server:trackerName("1"), server:trackerCode("4"))
 -- EOF

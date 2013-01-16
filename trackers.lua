@@ -33,9 +33,9 @@ function M.getId(server, name, paramArray)
 end
 function M.getCode(server, id, paramArray)
     local list = M.getList(server, nil, paramArray)
-    return M.handleGet(list, "code", id)
+    return M.handleGet(list, "tracker_code", id)
 end
-function M.getName(server, name, paramArray)
+function M.getName(server, id, paramArray)
     local list = M.getList(server, nil, paramArray)
     return M.handleGet(list, "name", id)
 end

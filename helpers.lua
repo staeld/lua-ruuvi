@@ -21,7 +21,6 @@ function aux.connObj(url, path)
     local c = curl.easy_init()
     c:setopt_useragent(libName .."/".. libVersion)
     c:setopt_url(url .. path)
-    print(url, path)
     return c
 end
 

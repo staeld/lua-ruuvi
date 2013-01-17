@@ -24,11 +24,12 @@ function aux.connObj(url, path)
     return c
 end
 
--- TODO: should aux.ping() be moved to top level (ruuvi.ping()) for direct use?
-function aux.ping(server)
+function aux.ping(servobj)
     local pingTime = os.time(os.date("!*t"))    -- Ensure it's in UTC
 
-    local c = aux.connObj(server, "ping")
+    local c = servobj._c
+    c:setopt_url(servobj.url .. "ping")
+    -- local c = aux.connObj(server, "ping")
     local f = io.tmpfile()
     c:perform({ writefunction = function(str) f:write(str) end })
     local recv = os.time(os.date("!*t"))

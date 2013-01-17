@@ -13,7 +13,7 @@ print("Testing direct call to ruuvi.aux.ping()")
 --ruuvi.aux.ping(url)
 
 print("Testing server object creation and pinging")
---server:ping()
+server:ping()
 
 print("Testing tracker listing")
 for i, t in ipairs(server:trackers()) do
@@ -29,4 +29,24 @@ end
 print("Testing fetching of tracker IDs")
 print(server:trackerId("fooo"), server:trackerId("sepeto"))
 print(server:trackerName("1"), server:trackerCode("4"))
+
+print()
+print("Last activity reported by tracker 'foobar'")
+id = server:trackerId("foobar")
+timestring = server:trackers(id)[1].latest_activity
+t = ruuvi.aux.toTimeTable(timestring)
+
+trackerTime = os.time(t)
+now = os.time(os.date("!*t"))
+diff = os.difftime(now, trackerTime)
+
+days = diff / ( 60*60 * 24 )
+if days < 1 then
+    days = days * 24
+    days = string.format("%.1f hours", days)
+else
+    days = string.format("%.1f days", days)
+end
+print(timestring, ", which is " .. days .. " ago.")
+
 -- EOF

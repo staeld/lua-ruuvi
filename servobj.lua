@@ -15,32 +15,34 @@ function M.new(url)
     obj.url = url
     obj._c  = aux.connObj(url) -- TODO: Use this object instead of creating new ones for every function call
 
+    obj._c:setopt_useragent(libName .."/".. libVersion)
+
     function obj:ping()
-        return aux.ping(self.url)
+        return aux.ping(self)
     end
 
     -- Events
     function obj:events(idString, paramArray)
-        return events.getList(self.url, idString, paramArray)
+        return events.getList(self, idString, paramArray)
     end
     -- Trackers
     function obj:trackerId(name)
-        return trackers.getId(self.url, name)
+        return trackers.getId(self, name)
     end
     function obj:trackerCode(id)
-        return trackers.getCode(self.url, id)
+        return trackers.getCode(self, id)
     end
     function obj:trackerName(id)
-        return trackers.getName(self.url, id)
+        return trackers.getName(self, id)
     end
     function obj:trackers(idString, paramArray)
-        return trackers.getList(self.url, idString, paramArray)
+        return trackers.getList(self, idString, paramArray)
     end
     function obj:eventsFor(idString, paramArray)
-        return events.getFor(self.url, idString, paramArray)
+        return events.getFor(self, idString, paramArray)
     end
     function obj:latestFor(idString, paramArray)
-        return events.getLatestFor(self.url, idString, paramArray)
+        return events.getLatestFor(self, idString, paramArray)
     end
     
     return obj

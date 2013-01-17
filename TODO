@@ -9,19 +9,15 @@ CURRENT
         [ ] Prettify/condense this code
     [ ] Rewrite event functions
     [x] Resolve tracker IDs from names, vice versa
-    [ ] Reuse connection object from server object; don't create a new every time
+    [/] Reuse connection object from server object; don't create a new every time
+        - Currently clones object's connection into local variable, then sets url
+    [ ] trackers.getLastdate() and trackers.getCreateddate()
 
 
 IDEAS
 
-    - Use lua-dkjson for JSON handling
-    - Use objects; read up on metatables
-        serv = ruuvi.new(url)
-        serv:ping()
-        - How does one handle trackers etc.?
-            serv:eventList(paramArray)
-            serv:trackerList(paramArray)
-            serv:latestEvent(trackerId, paramArray)
     - Caching
+    - Fetch pairs of tracker names/ids
+    - Make use of dates
 
 BUGS

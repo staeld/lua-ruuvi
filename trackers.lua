@@ -5,6 +5,7 @@
 -- lua-ruuvi is released under the GPLv3 - see COPYING
 local M = {}
 
+-- trackers.getList(): get trackers, optionally narrowed by ids
 function M.getList(servobj, idString, paramArray)
     local path = "trackers"
     if idString then
@@ -22,6 +23,8 @@ function M.getList(servobj, idString, paramArray)
 end
 
 -- TODO: Refactor/fix these
+
+-- trackers.getId(): get the id of a tracker with given code/name
 function M.getId(servobj, name, paramArray)
     local list = M.getList(servobj, nil, paramArray)
     for i, t in ipairs(list) do
@@ -33,15 +36,18 @@ function M.getId(servobj, name, paramArray)
     end
     return nil
 end
+-- trackers.getCode(): return tracker_code for a single id
 function M.getCode(servobj, id, paramArray)
     local list = M.getList(servobj, nil, paramArray)
     return M.handleGet(list, "tracker_code", id)
 end
+-- trackers.getName(): return tracker's name for a single id
 function M.getName(servobj, id, paramArray)
     local list = M.getList(servobj, nil, paramArray)
     return M.handleGet(list, "name", id)
 end
 
+-- trackers.handleGet(): auxilliary function to handle lists
 function M.handleGet(list, item, id)
     for i, t in ipairs(list) do
         if t.id == id then return t[item] end

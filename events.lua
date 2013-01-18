@@ -6,6 +6,8 @@
 local M = {}
 
 -- TODO: Refactor these into one/several smaller functions; reuse code
+
+-- events.getList(): get list of events, optionally only events specified by ids
 function M.getList(servobj, idString)
     local path = "events"
     if idString then path = path .."/".. idString end
@@ -18,6 +20,7 @@ function M.getList(servobj, idString)
     return obj.events
 end
 
+-- events.getFor(): retrieve events related to one or more trackers
 function M.getFor(servobj, idString, paramArray)
     local path = "trackers/" .. idString .. "/events"
     if paramArray then path = aux.url_addParams(path, paramArray) end
@@ -30,6 +33,7 @@ function M.getFor(servobj, idString, paramArray)
     return obj.events
 end
 
+-- events.getLatestFor(): retrieve the latest events related to one or more trackers
 function M.getLatestFor(servobj, idString, paramArray)
     local path = "trackers/" .. idString .. "/events/latest"
     if paramArray then path = aux.url_addParams(path, paramArray) end

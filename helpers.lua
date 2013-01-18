@@ -16,6 +16,7 @@ function aux.throwError(err)
     --os.exit(1)
 end
 
+-- aux.connObj(): create a new curl connection object with library useragent
 function aux.connObj(url, path)
     path = path or ""
     local c = curl.easy_init()
@@ -24,28 +25,31 @@ function aux.connObj(url, path)
     return c
 end
 
+-- Ping server via the API
 function aux.ping(servobj)
     local pingTime = os.time(os.date("!*t"))    -- Ensure it's in UTC
 
-    local c = servobj._c
+    local c = servobj._c        -- Clone the server's connection object
     c:setopt_url(servobj.url .. "ping")
-    -- local c = aux.connObj(server, "ping")
-    local f = io.tmpfile()
+
+    local f = io.tmpfile()      -- Write api output to tmpfile
     c:perform({ writefunction = function(str) f:write(str) end })
     local recv = os.time(os.date("!*t"))
     local obj  = aux.readjson(f)
     f:close()
     if obj and obj.time then
+        -- Calculate ping and time difference
         local serverTime = os.time(aux.toTimeTable(obj.time))
         local servdiff   = os.difftime(recv, serverTime)
         local lag        = os.difftime(recv, pingTime)
         print("DEBUG Ping successful! Turnabout lag: " .. lag .. ", time difference: " .. servdiff)
         return true, lag, servdiff
     else
-        print("Ping did not output proper response!")
+        print("DEBUG Ping did not output proper response!")
     end
 end
 
+-- aux.url_addParams(): add parametres to the API path
 function aux.url_addParams(path, paramArray)
     local paramsAdded = false
     for param, value in pairs(paramArray) do
@@ -59,6 +63,7 @@ function aux.url_addParams(path, paramArray)
     return path
 end
 
+-- aux.readjson(): reads and parses json from a temporary file
 function aux.readjson(filehandle)
     filehandle:seek("set")
     local str = filehandle:read("*a")
@@ -67,6 +72,7 @@ function aux.readjson(filehandle)
     else return obj end
 end
 
+-- aux.toTimeTable(): creates a standard time table from a string
 function aux.toTimeTable(str)
     local t = {}
     t.year, t.month, t.day = str:match("(%d%d%d%d)%-(%d%d)%-(%d%d)")
@@ -82,6 +88,7 @@ function aux.toTimeTable(str)
     return t
 end
 
+-- aux.toTimeString(): creates a standard time string from a table
 function aux.toTimeString(t)
     os.date("!%FT%T%z", os.time(t))
 end

@@ -13,7 +13,7 @@ function M.new(url)
     end
 
     obj.url = url
-    obj._c  = aux.connObj(url) -- TODO: Use this object instead of creating new ones for every function call
+    obj._c  = aux.connObj(url)
 
     obj._c:setopt_useragent(libName .."/".. libVersion)
 
